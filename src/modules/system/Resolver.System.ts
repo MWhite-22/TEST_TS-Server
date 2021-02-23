@@ -3,7 +3,7 @@ import { Query } from 'type-graphql';
 import { Inject } from 'typedi';
 import { Context, ISessionData } from '../../@types/context';
 import { Logger } from '../../utils/Logger';
-import { SessionData } from '../../utils/@SessionData';
+import { SessionData } from '../../utils/typeGQL/@SessionData';
 import { wait } from '../../utils/wait';
 
 @Resolver()

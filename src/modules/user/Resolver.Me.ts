@@ -3,7 +3,7 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from 'typeorm-typedi-extensions';
 import { User } from './Entity.User';
 import { ISessionData } from '../../@types/context';
-import { SessionData } from '../../utils/@SessionData';
+import { SessionData } from '../../utils/typeGQL/@SessionData';
 
 @Resolver(() => User)
 export class MeResolver {

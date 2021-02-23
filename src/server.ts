@@ -6,22 +6,21 @@ import express from 'express';
 import session from 'express-session';
 import { GraphQLSchema } from 'graphql';
 import { join } from 'path';
-import { buildSchema, ResolverData } from 'type-graphql';
+import { buildSchema } from 'type-graphql';
 import { Container } from 'typedi';
 import { Connection, getConnectionManager, useContainer as TypeORMContainer } from 'typeorm';
 import { Context } from './@types/context';
 import { FRONTEND_URL, PORT, REDIS_PREFIX_COOKIE_SESSION, SESSION_ID, SESSION_SECRET, __PROD__ } from './constants';
 import { RedisClient } from './database/config/redisConfig';
 import { getDbConnectionOptions } from './database/config/typeormConfig';
-import { authChecker } from './utils/middleware/authChecker';
-import { containerResetPlugin } from './utils/plugins/containerReset';
-import { GraphQLJSON } from './utils/scalars/JSONScalar';
+import { authChecker } from './utils/typeGQL/authChecker';
+import { RequestTimerPlugin } from './utils/apollo/plugins/ResponseTimer';
+import { GraphQLJSON } from './utils/typeGQL/scalars/JSONScalar';
 
 export class Server {
 	public OrmConnection: Connection;
 	public GqlSchema: GraphQLSchema;
 	public ApolloServer: ApolloServer;
-	public DiContainer: Container;
 	public app: Express;
 
 	constructor() {
@@ -92,7 +91,7 @@ export class Server {
 				commentDescriptions: true,
 				sortedSchema: true,
 			},
-			container: ({ context }: ResolverData<Context>) => context.container,
+			container: Container,
 			authChecker,
 		});
 	}
@@ -105,15 +104,9 @@ export class Server {
 			schema: this.GqlSchema,
 			context: ({ req, res }): Context => {
 				const requestId = String(Math.floor(Math.random() * Number.MAX_SAFE_INTEGER));
-				// get the scoped container
-				const container = Container.of(requestId);
-				// create fresh context object
-				const context = { requestId, container };
-				// place context or other data in container
-				container.set('context', context);
-				return { req, res, session: req.session, redis: RedisClient, requestId, container };
+				return { req, res, session: req.session, redis: RedisClient, requestId };
 			},
-			plugins: [containerResetPlugin],
+			plugins: [RequestTimerPlugin],
 			playground: __PROD__
 				? false
 				: {

@@ -4,9 +4,14 @@ import { Context } from '../../@types/context';
 export const authChecker: AuthChecker<Context> = async ({ context: { session } }, authorizedRoles) => {
 	const currentUser = session.data?.currentUser;
 
-	console.log('\n~~~~~~~~~~ AUTH CHECK ~~~~~~~~~~');
-	console.log('Current User: ', currentUser ? currentUser.email : 'Guest');
-	console.log('Authorized Roles Required: ', authorizedRoles);
+	console.log(
+		'\nAUTH_CHECK:',
+		{
+			'Current User': currentUser ? currentUser.email : 'Guest',
+			'Authorized Roles Required': authorizedRoles,
+		},
+		'\n'
+	);
 	// console.log('Accessed Object: ', root);
 
 	// Confirm there is a logged in user
@@ -22,15 +27,17 @@ export const authChecker: AuthChecker<Context> = async ({ context: { session } }
 		// return currentUser.isAdmin;
 	}
 
-	//DEV
+	//DEV: Remove Me
 	if (authorizedRoles.includes('UNAUTHED')) {
 		return false;
 	}
+	//~~~ ^ REMOVE ^ ~~~//
 
 	// Check that permissions overlap
 	return authorizedRoles.some((role: string) => {
-		// currentUser.accessRoles.includes(role)
-		console.log('Role', role);
+		if (role === 'REMOVE AFTER DEV') throw 'RemoveMe'; //DEV: Remove Me
 		return true;
+
+		// currentUser.accessRoles.includes(role)
 	});
 };

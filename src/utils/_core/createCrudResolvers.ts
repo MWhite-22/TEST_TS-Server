@@ -2,7 +2,7 @@ import { Arg, Args, Authorized, ClassType, ID, Mutation, ObjectType, Query, Reso
 import { DeepPartial, Repository } from 'typeorm';
 import { InjectRepository } from 'typeorm-typedi-extensions';
 import { ISessionData } from '../../@types/context';
-import { SessionData } from '../@SessionData';
+import { SessionData } from '../typeGQL/@SessionData';
 import { createPaginatedResponse } from './createPaginatedResponseType';
 import { CoreEntity } from './Entity.Core';
 import { DefaultGetArgs } from './createGetArgs';
@@ -64,15 +64,13 @@ export function createCrudResolvers<T extends ClassType & Partial<CoreEntity>>(
 		})
 		@Authorized(`${entityName.toUpperCase()}:READ`)
 		async getMany(
-			@Args() { limit, offset, where }: DefaultGetArgs<T>,
+			@Args() { limit, offset }: DefaultGetArgs<T>,
 			@Arg('includeDeleted', {
 				description: 'Include soft-deleted entities in the return results',
 				nullable: true,
 			})
 			withDeleted: boolean = false
 		): Promise<basePaginatedResponse> {
-			console.log('WHERE ARGS: ', { where });
-
 			const [results, count] = await this.baseRepo.findAndCount({
 				take: limit,
 				skip: offset,

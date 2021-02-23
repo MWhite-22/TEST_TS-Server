@@ -1,6 +1,5 @@
 import type { Session } from 'express-session';
 import { Redis } from 'ioredis';
-import type { ContainerInstance } from 'typedi';
 import { User } from '../modules/user/Entity.User';
 
 export interface ISessionData {
@@ -16,5 +15,4 @@ export interface Context {
 	session: Session & { data?: ISessionData };
 	redis: Redis;
 	requestId: string;
-	container: ContainerInstance;
 }
