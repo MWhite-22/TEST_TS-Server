@@ -3,6 +3,8 @@ import { Context } from '../../../@types/context';
 
 export const RequestTimerPlugin: ApolloServerPlugin<Context> = {
 	requestDidStart: ({ context, request }) => {
+		if (request.operationName === 'IntrospectionQuery') return;
+
 		console.log(
 			`\n-------------------- Request Started: ${context.requestId} | ${request.operationName} --------------------`
 		);
