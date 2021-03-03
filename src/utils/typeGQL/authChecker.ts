@@ -12,7 +12,10 @@ export const authChecker: AuthChecker<Context> = async ({ context: { session } }
 		},
 		'\n'
 	);
-	// console.log('Accessed Object: ', root);
+
+	//DEV: SERVER - skip authchecker
+	const devSkip = true;
+	if (devSkip) return true;
 
 	// Confirm there is a logged in user
 	if (!currentUser) return false;
@@ -27,15 +30,9 @@ export const authChecker: AuthChecker<Context> = async ({ context: { session } }
 		// return currentUser.isAdmin;
 	}
 
-	//DEV: Remove Me
-	if (authorizedRoles.includes('UNAUTHED')) {
-		return false;
-	}
-	//~~~ ^ REMOVE ^ ~~~//
-
 	// Check that permissions overlap
 	return authorizedRoles.some((role: string) => {
-		if (role === 'REMOVE AFTER DEV') throw 'RemoveMe'; //DEV: Remove Me
+		if (role === 'REMOVE AFTER DEV') throw 'Remove Me from Type-graphql Auth Checker'; //DEV: Remove Me
 		return true;
 
 		// currentUser.accessRoles.includes(role)

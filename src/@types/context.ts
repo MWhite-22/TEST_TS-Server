@@ -1,6 +1,7 @@
 import type { Session } from 'express-session';
 import { Redis } from 'ioredis';
 import { User } from '../modules/user/Entity.User';
+import { createEntityLoaders } from '../utils/createEntityLoader';
 
 export interface ISessionData {
 	currentUser: {
@@ -15,4 +16,5 @@ export interface Context {
 	session: Session & { data?: ISessionData };
 	redis: Redis;
 	requestId: string;
+	entityLoaders: createEntityLoaders;
 }

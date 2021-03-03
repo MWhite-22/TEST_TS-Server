@@ -1,18 +1,23 @@
-import { Args, FieldResolver, Resolver, ResolverInterface, Root } from 'type-graphql';
+import { Args, Ctx, FieldResolver, Resolver, Root } from 'type-graphql';
 import { Repository } from 'typeorm';
 import { InjectRepository } from 'typeorm-typedi-extensions';
-import { DefaultGetArgs } from '../../utils/_core/createGetArgs';
+import { Context } from '../../@types/context';
+import { PaginationArgs } from '../../utils/_core/createGetArgs';
+import { createRelationshipResolvers } from '../../utils/_core/createRelationshipResolvers';
+import { BookChapter } from '../bookChapter/Entity.BookChapter';
 import { Book } from './Entity.Book';
-import { BookChapter } from './Entity.BookChapter';
 
 @Resolver(() => Book)
-export class BookRelationshipResolver implements ResolverInterface<Book> {
+export class BookRelationshipResolver extends createRelationshipResolvers(Book) {
 	@InjectRepository(BookChapter)
 	bookChapterRepo: Repository<BookChapter>;
 
 	@FieldResolver(() => [BookChapter])
-	async chapters(@Root() root: Book, @Args() args: DefaultGetArgs<BookChapter>): Promise<BookChapter[]> {
-		console.log({ args });
-		return this.bookChapterRepo.find({ where: { bookId: root.id } });
+	async chaptersLoader(
+		@Root() root: Book,
+		@Args() {}: PaginationArgs,
+		@Ctx() { entityLoaders }: Context
+	): Promise<BookChapter[]> {
+		return (await entityLoaders.BookChapter.load(root.id)) as BookChapter[]; //DEV: Work around for entityLoader types
 	}
 }

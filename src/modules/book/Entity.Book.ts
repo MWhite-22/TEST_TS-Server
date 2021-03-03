@@ -1,11 +1,11 @@
 import { Field, ObjectType } from 'type-graphql';
 import { Column, Entity, OneToMany } from 'typeorm';
-import { CoreEntityWithUser } from '../../utils/_core/Entity.Core';
-import { BookChapter } from './Entity.BookChapter';
+import { CoreEntity } from '../../utils/_core/Entity.Core';
+import { BookChapter } from '../bookChapter/Entity.BookChapter';
 
 @Entity()
 @ObjectType()
-export class Book extends CoreEntityWithUser {
+export class Book extends CoreEntity {
 	@Field()
 	@Column({ unique: true })
 	title: string;
@@ -18,6 +18,8 @@ export class Book extends CoreEntityWithUser {
 	@Column()
 	price: number;
 
+	//DEV: REMOVE FIELD
+	@Field(() => [BookChapter])
 	@OneToMany(() => BookChapter, (bc) => bc.book)
 	chapters: Promise<BookChapter[]>;
 }

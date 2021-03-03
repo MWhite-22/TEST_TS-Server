@@ -1,10 +1,10 @@
 import { Field, ObjectType, Root } from 'type-graphql';
 import { Column, Entity } from 'typeorm';
-import { CoreEntityWithUser } from '../../utils/_core/Entity.Core';
+import { CoreEntity } from '../../utils/_core/Entity.Core';
 
 @Entity()
 @ObjectType()
-export class User extends CoreEntityWithUser {
+export class User extends CoreEntity {
 	@Field()
 	@Column()
 	name_first: string;

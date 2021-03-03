@@ -10,9 +10,6 @@ export class BookChapterInputCreate implements GQLInputTypes<BookChapter> {
 	@Field()
 	number: number;
 
-	@Field()
-	page_start: number;
-
 	@Field(() => ID)
 	bookId: string;
 }
@@ -24,9 +21,6 @@ export class BookChapterInputUpdate implements Partial<BookChapterInputCreate> {
 
 	@Field({ nullable: true })
 	number?: number;
-
-	@Field({ nullable: true })
-	page_start?: number;
 
 	@Field(() => ID, { nullable: true })
 	bookId?: string;

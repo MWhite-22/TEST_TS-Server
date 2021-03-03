@@ -1,13 +1,12 @@
-import { Service, Inject } from 'typedi';
+import { Service } from 'typedi';
 
-import { Context } from '../@types/context';
 @Service()
 export class Logger {
-	constructor(@Inject('context') private readonly context: Context) {
+	constructor() {
 		console.log('Logger created!');
 	}
 
 	log(...messages: any[]) {
-		console.log(`(ID ${this.context.requestId}):`, ...messages);
+		console.log('[LOGGER - LOG]', ...messages);
 	}
 }

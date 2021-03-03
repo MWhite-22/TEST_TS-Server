@@ -1,4 +1,4 @@
-import { CoreEntityWithUser } from '../utils/_core/Entity.Core';
+import { CoreEntity } from '../utils/_core/Entity.Core';
 
 export type ExtractPrimitiveFieldNames<T> = {
 	[K in keyof T]: T[K] extends Function | Promise<any> ? never : K;
@@ -6,4 +6,4 @@ export type ExtractPrimitiveFieldNames<T> = {
 
 export type ExtractPrimitiveFields<T> = Pick<T, ExtractPrimitiveFieldNames<T>>;
 
-export type GQLInputTypes<T> = Omit<ExtractPrimitiveFields<T>, keyof CoreEntityWithUser>;
+export type GQLInputTypes<T> = Omit<ExtractPrimitiveFields<T>, keyof CoreEntity>;

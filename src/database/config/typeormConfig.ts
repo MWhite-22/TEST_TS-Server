@@ -7,11 +7,7 @@ export const getDbConnectionOptions = (seedDb = false): ConnectionOptions => {
 		{
 			name: 'development',
 			type: 'postgres',
-			host: '192.168.1.202',
-			port: 5432,
-			database: 'Test_TS-Server_DEV',
-			username: 'admin',
-			password: 'password',
+			url: DATABASE_URL,
 			synchronize: true,
 			logging: true,
 			entities: [join(__dirname, '../../modules/**/Entity.*.js')],

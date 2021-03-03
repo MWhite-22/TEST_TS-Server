@@ -5,7 +5,7 @@ import { ISessionData } from '../../@types/context';
 import { SessionData } from '../typeGQL/@SessionData';
 import { createPaginatedResponse } from './createPaginatedResponseType';
 import { CoreEntity } from './Entity.Core';
-import { DefaultGetArgs } from './createGetArgs';
+import { PaginationArgs } from './createGetArgs';
 import { capitalize } from '../capitalize';
 
 export function createCrudResolvers<T extends ClassType & Partial<CoreEntity>>(
@@ -64,7 +64,7 @@ export function createCrudResolvers<T extends ClassType & Partial<CoreEntity>>(
 		})
 		@Authorized(`${entityName.toUpperCase()}:READ`)
 		async getMany(
-			@Args() { limit, offset }: DefaultGetArgs<T>,
+			@Args() { limit, offset }: PaginationArgs,
 			@Arg('includeDeleted', {
 				description: 'Include soft-deleted entities in the return results',
 				nullable: true,
